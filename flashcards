@@ -1,0 +1,2552 @@
+### Flashcards
+### CompTIA Linux+
+
+How to print the date and time?
+date
+
+Key sequence to clear the screen?
+CTRL+L
+
+What does sudo stand for?
+Switch User and Do
+
+Does ‘su -’ work on Ubuntu?
+No, because it prompts for a root password, and on Ubuntu there is no root password
+
+What is the alternative so ‘su -’ on Ubuntu, to become root? (also works on other distros)
+sudo -i
+
+What are the most important man page sections, and what are they for?
+1 is for end-user commands
+5 is for configuration files
+8 is for admin/root commands
+
+Key sequence to skip to the end of an open file?
+SHIFT+G
+
+Key sequence to move to the very top of an open file?
+g
+
+What other command is available to view manuals for commands, other than ‘man’?
+info / pinfo
+
+What command would take you to the ‘best match’ of an info manual page, for a command? i.e.; the equivalent of ‘man [COMMAND]’
+pinfo -a [COMMAND]
+
+What command would you use to search man pages, to find a command to do X? (where X is a keyword)
+man -k [X]
+
+What command could you run to search for commands based on a keyword, other than man -k?
+apropos
+
+What command would you run if man -k wasn’t finding anything? And why?
+mandb, because it updates the database of man pages held in /usr/share/man
+
+What directory holds documents about packages (not man pages)?
+/usr/share/doc
+
+Name the 4 main filesystem types used in Linux
+ext3
+ext4
+XFS
+Btrfs
+
+What would you use to set labels on existing filesystems?
+- e2label /dev/sda# [LABEL] (for EXT4)
+- xfs_admin -L  (for XFS)
+
+What command would you use to create a new XFS filesystem, on already existing partition sdc3, with the label ‘data’?
+mkfs.xfs -L data /dev/sdc3
+
+In order, what are the 6 fstab columns?
+- Block device (UUID/Label)
+- Mountpoint
+- file system type
+- mount options
+- dump option
+- fsck option (filesystem check, check the FS at boot time)
+
+Regards the fsck option in column 6 of /etc/fstab, what number would you assign for the root filesystem if you wanted it checked at boot, and what number would you assign for any other filesystem you wanted checked at boot?
+Root - 1
+Other - 2
+Don’t check - 0
+
+What command to list all Block devices?
+blkid
+
+What command would attempt to mount all filesystems in fstab?
+mount -a
+
+Other than the ‘mount’ command, what command can you use to give an overview of all filesystems that are mounted?
+findmnt
+
+What utility sits behind fstab, and actually does the mounting of filesytems?
+systemd
+
+In what directory are mount unit files created by systemd, based on the content of fstab?
+/run
+
+What command needs to be run after modifying any systemd configuration files?
+systemctl daemon-reload
+
+Do the ‘df’ and ‘du’ commands work on thin provisioned storage?
+No. You should use lsblk, vgs, pvs and lvs.
+
+What command can you use to display the total size of the current directory?
+du -hs
+
+What command to list the attributes of an ext4 filesystem under Volume Group vg1 and Logical Volume lv1?
+tune2fs -l /dev/mapper/vg1-lv1
+
+What command provides a **brief** description of a command?
+whatis
+
+What are the Troubleshooting Methodology steps?
+I DETE I VPR
+- Identify
+- Determine scope
+- Establish theory
+- Test theory
+- Establish Plan of Action
+- Implement
+- Verify
+- Preventative Measures
+- Root Cause Analysis
+
+What are the 7 columns in the /etc/passwd file?
+1. Username
+2. Password
+3. UserID
+4. GroupID
+5. Comment
+6. Home Directory
+7. Shell
+
+What are the 9 columns in the /etc/shadow file?
+1. Username
+2. Password
+3. Days since last password change
+4. Days before password **may** be changed
+5. Days before password **must** be changed
+6. Password Expiry Warning
+7. Days after password expires that account will be disabled
+8. Days until account expires
+9. Unused / Spare
+
+What is the difference between .bash_profile and .bashrc?
+The ~/.bash_profile sets user-specific environment variables for new Bash shells, and ~/.bashrc runs when noninteractive shells are launched.
+
+What directory stores files that are copied automatically to a new user’s home directory?
+/etc/skel
+
+What is the difference between useradd and adduser?
+adduser is interactive, useradd is not.
+
+What file holds default account settings?
+/etc/login.defs
+
+What command would change the name of group ‘admins’ to ‘unix’?
+groupmod -n unix admins
+
+What command would add user ‘jbloggs’ to group ‘unix’, without removing them from any groups they are already a member of?
+usermod -aG unix jbloggs
+
+What is the syntax of the entries in /etc/sudoers?
+username hostname = (user) command
+
+What command, when entered next to a username in /etc/sudoers, could allow a user to edit a specified file with elevated privilege?
+sudoedit
+
+What does Polkit stand for?
+Policy Kit
+
+What is the difference between sudo and polkit?
+Polkit is more granular than sudo. Unlike sudo, polkit does not grant full root access to a process but instead grants specific access to defined actions.
+
+What directory stores polkit Actions?
+/usr/share/polkit-1/actions
+
+What directories store polkit Rules?
+- /etc/polkit-t/rules.d
+- /etc/share/polkit-1/rules.d
+
+What are the 4 polkit commands, and what do they do?
+pkexec - Execute an Action as an authorised user
+pkaction- Display Action details
+pkcheck - Display whether a process is authorised
+pkttyagent - Provides a text based authentication agent
+
+If a Policy Kit authorised user wanted to run the command ‘useradd jbloggs’, what would they type?
+pkexec useradd jbloggs
+
+What command would kill all processes of user jbloggs?
+killall -u jbloggs
+
+What command displays last login times for accounts?
+lastlog
+
+What one-word command displays the contents of /var/log/wtmp?
+last
+
+What is held in /var/log/wtmp?
+All login and logoff events
+
+What command is used to manage password settings?
+chage
+
+What is the first column in the permissions section of a long listing (ls -l)?
+Whether the resource is a file or directory. - denotes file, d denotes directory.
+
+What is the name of the value that defines default permissions on a file or directory?
+It’s umask
+
+Can you set a umask that defines execute permissions should be set?
+No. Because umask subtracts from the default permissions (666), it cannot force newly created files to set the execute bit.
+
+What would a umask of 022 set on new, non-executable files? Why?
+umask 022 would set the default permissions on new, non-executable files as 0644.
+This is because the deafault is 0666, and the umask ‘takes away’ permissions, so (6-0),(6-2),(6-2) is 644.
+
+What command is used to change the group that owns a file?
+chgrp
+
+What command lists the attributes of a file or directory (whether it has ‘special’ permissions set)?
+lsattr
+
+What command allows the editing of attributes on files or directories (set or unset ‘special’ permissions)?
+chattr
+
+What flag prevents a file from being modified, even by the root user? How do we set it?
+The immutable flag.
+chattr +i filename
+
+What is SUID? What does it do?
+Set User ID. It’s a special permission for files only that allows users to run it as the owner of the file.
+For example ‘passwd’ is owned by root, but users can still run it to set their own password.
+
+What is SGID? What does it do?
+Set Group ID. It’s a special permission for files and directories that allows users to run it as the group that owns the file.
+
+How does SGID affect a directory?
+All new files and subdirectories created within a directory with SGID set will inherit the SGID.
+This does not apply to already existing objects, or files that are moved from elsewhere. They keep their permissions.
+
+Using Symbolic mode, how do you set the SUID special permission on a file?
+chmod u+s
+
+Using Symbolic mode, how do you set the SGID special permission on a file/directory?
+chmod g+s
+
+Using Absolute mode, how do you set the SUID special permission on a file?
+chmod 4### [FILENAME]
+
+Using Absolute mode, how do you set the SGID special permission on a file/directory?
+chmod 2### [FILE/DIR NAME]
+
+How can you tell if SUID or SGID are set on an object?
+The ‘x’, within the relevant column in the file permissions (viewed via ls -l), will be an ‘s’ instead.
+
+What does a sticky bit do?
+It prevents anyone, other than the owner of a directory, from deleting files within that directory.
+Without it, anyone with Write and Execute permissions can delete files in a directory.
+
+Using Symbolic mode, how do you set a Sticky Bit on a file/directory?
+chmod +t [DIR NAME]
+
+How can you tell if a directory has a Sticky Bit assigned?
+Listing the permissions via ls -l, you’ll see a ‘t’ on the end of them.
+
+Using Absolute mode, how do you set the SGID special permission on a file/directory?
+chmod 1### [DIR NAME]
+
+What are the 2 commands relevant to ACLs?
+getfacl - Show ACL permissions
+setfacl - Set ACL permissions
+
+What command would give user ‘jbloggs’ r-x permissions on file ‘bla.txt’, via an ACL?
+setfacl -m u:jbloggs:rx bla.txt
+
+What command would give group ‘admins’ rwx permissions on directory ‘dir1’, via an ACL?
+setfacl -m g:admins:rwx dir1
+
+What command would remove an existing ACL for user jbloggs on file bla.txt?
+setfacl -x u:jbloggs bla.txt
+
+What command would remove all ACLs on file bla.txt?
+setfacl -b bla.txt
+
+What is the standardisation of Linux filesystems called?
+The Filesystem Hierarchy Standard (FHS)
+
+What is stored in /bin?
+Essential command-line utilities and binaries. For example **/bin/ls** is the binary for the ls command.
+
+What is stored in /dev?
+Stores hardware and software device drivers.
+This directory maintains file system entries that represent the devices connected to the system (for example, the /dev/sda1 partition).
+
+What is stored in /lib?
+Shared program libraries required by the kernel, command-line utilities, and binaries.
+
+What is stored in /opt?
+Optional files of large software packages. Think ‘optional software’.
+
+What is stored in /proc?
+Processes. This is a **virtual file system (VFS)** that represents continually updated kernel information and directories with process IDs.
+
+What is stored in /sbin?
+Stores binaries that are used for completing the booting process and are used by the root user.
+
+What is stored in /sys?
+This is another **virtual file system (VFS)**, and it primarily stores information about devices. For example, /sys/block.
+
+What is stored in /usr?
+A read-only directory that stores user programs and files accessible to all users.
+
+What is stored in /var?
+Variable files that regularly change; Logs, printer spools, networking configuration files.
+
+Name the 5 important subdirectories under /usr, and what they are used for.
+1. /usr/bin - Executables accessible by all users
+2. /usr/local - Custom built applications
+3. /usr/lib - Object libraries and internal binaries that are needed by programs
+4. /usr/lib64 - Same as /usr/lib, but for 64-bit systems
+5. /usr/share - Read-only, architecture independent files
+
+What command displays file type?
+file
+
+What command displays object metadata, such as the last modify time and inode?
+stat
+
+How would you view a files inode?
+ls -i, or stat
+
+When using the ‘ln’ command, which way around are the destination and new link/shortcut file to create?
+FROM, then TO. So DESTINATION, then LINK TO CREATE, i.e.; ln -s /a/really/long/file/path/file.txt new.link
+
+What action redirects and appends STDERR in to file.txt?
+2>>file.txt
+
+What action redirects both STDOUT and STDERR in to file.txt?
+&>
+
+If you wanted to use ‘cat’ to input text in to file.txt, allowing you to type one line at a time on-screen until you entered ‘EOF’, what command would you use?
+cat<<EOF
+
+How would you run ‘script.sh’ in the background, as a job?
+script.sh &
+
+What command allows you to see the output of a command/script on-screen, but also pipe in to a file?
+tee
+
+What command would you use to find all files within /etc with a permission level of 777?
+find /etc -perm 777
+
+What command can you pipe to, to replace one string with another?
+tr [String to be replaced] [Replace with]
+
+What option for the command ‘sort’ indicates which field value/column to use?
+sort -k
+
+What option for the command ‘sort’ uses descending order, rather than the default of ascending?
+sort -r
+
+Which commands takes the content of two files and puts them together, such that the first file is using for ‘column 1’ and the second file is used for ‘column 2’?
+paste
+
+Using the ‘paste’ command, how would you combine the files ‘trees’ and ‘fruits’, using the delimiter of a comma?
+paste -d , trees fruits
+
+How would you retrieve all lines, in file.txt, that began with an ‘a’, ‘b’ or ‘c’?
+awk ‘/[abc]/’ file.txt
+
+What does sed stand for? Where might you see it?
+Stream Editor
+It’s available within Vim, for example when you do a replace such as :s/^/#/g
+
+A system administrator uses the *stream editor* command to modify files. Why would the administrator choose to use an address?
+To act only on text that matches a given regular expression pattern
+
+In Vim Command mode, how do you move to the top of the file?
+gg
+
+In Vim Command mode, how do you move to the bottom of the file?
+SHIFT+g (G)
+
+In Vim Command mode, how do you move to line 99?
+99G
+
+In Vim Command mode, which keys move left, down, up and right, respectively?
+h, j, k and l
+
+In Vim Command mode, how do you delete the word at the cursors position?
+d
+
+In Vim Command mode, how do you delete 5 lines?
+5dd
+
+In Vim Command mode, how do you Cut the current line (yank)?
+yy
+
+In Vim Command mode, how do you Paste a copied/yanked line?
+p
+
+In Vim Command mode, how do you save and exit Vim?
+ZZ
+
+In Vim Insert mode, how do you start inputting text at the start of the current line?
+SHIFT+i (I)
+
+In Vim Insert mode, how do you insert text on the line above the cursor position?
+SHIFT+o (O)
+
+In Vim, what key combinations split the screen horizontally?
+CTRL+w, then s
+
+In Vim, what key combinations split the screen vertically?
+CTRL+w, then v
+
+In Nano, what key combinations save the file (Save and Save As)?
+CTRL+S (Save)
+CTRL+O (Save As)
+
+In Nano, what key combination exits?
+CTRL+X
+
+What does tar stand for?
+Tape Archiver
+
+What tar option creates a tarball?
+-c
+
+What tar option extracts from a tarball?
+-x
+
+What tar option appends files in to an existing tarball?
+-r
+
+What tar option lists the files in a tarball?
+-t
+
+What tar option also compresses the output using gzip?
+-z
+
+What tar option also compresses the output using bzip2?
+-j
+
+What command would tarball file1, file2 and file3 in to an archive called files.tar?
+tar -cvf files.tar file1 file2 file3
+
+What command would add file4 to an existing tarball called files.tar?
+tar -rf files.tar file4
+
+What are the 5 main options for the dd command?
+- if= (Input File)
+- of= (Output File_
+- bs= (Block Size)
+- count= (Number of Blocks to be written)
+- status= (Level of info; none, noxfer, progress)
+
+Which compression command provides the best compression, but is the slowest?
+xz
+
+Which compression command provides the fastest compression, but doesn’t save on storage space as much as others?
+gzip
+
+What are the 3 Vim modes?
+- Command
+- Insert
+- Execute
+
+What are the 3x Red Hat Package Managers?
+- RPM
+- YUM
+- DNF
+
+What are the 2x Debian Package Managers?
+- DPKG
+- APT
+
+What are the software management phases?
+- Install
+- Update/Maintain
+- Remove
+- Inventory
+- Query Information
+
+What RPM option upgrades a package, or installs it if not already present?
+-U
+
+What RPM option updates a package, but does not install it if it isn’t already present? What is the option called?
+-F (Freshen)
+
+What RPM option displays a progress bar?
+-h
+
+What RPM option verifies software?
+-V
+
+What RPM option lists all installed packages?
+rpm -qa
+
+What RPM option displays information about a specific package?
+rpm -qi [PACKAGE]
+
+What Yum command would list all packages that provide the command ‘locate’?
+yum provides locate
+
+What Yum command would show information about a specific package?
+yum info [PACKAGE]
+
+What DNF command would show information about a specific package?
+dnf info [PACKAGE]
+
+What DNF command would list all installed packages?
+dnf list installed
+
+What DNF command would install all packages in the group ‘virtualization’? (name 2 commands)
+dnf group install virtualization
+or
+dnf install @virtualization
+
+What is the DNF equivalent of yum update [PACKAGE]?
+dnf upgrade [PACKAGE]
+
+What command would add a new repository, via APT?
+add-apt-repository
+
+What command would add a new repository, via DNF?
+dnf config-manager —add-repo [REPO]
+
+What command would disable a repository, via DNF?
+dnf config-manager —set-disabled [REPO]
+
+Yum stores it’s config file in /etc/yum.conf. Where does dnf store it’s equivalent config file?
+/etc/dnf/dnf.conf
+
+What rpm config files could be created when a package is updated via dnf, where it’s default configuration has been amended by the package maintainer?
+- An .rpmnew file, which contains the new default configuration file and leaves your original configuration file untouched.
+    or
+- An .rpmsave file, which is a copy of your original configuration file, which has been replaced by the new default file.
+
+What is the ‘apt’ version of yum erase?
+apt purge
+
+What is the command, on Debian systems, to show package information?
+apt show [PACKAGE]
+
+What is the command, on Debian systems, to show all installed packages?
+apt list —installed
+
+What is the apt option for installing dependencies, along with a package install?
+-f
+
+What are the 4x DPKG options that you should remember? What do they do?
+- -i for install
+- -r for remove
+- -l for list package info
+- -s for installation status
+
+What is the equivalent directory to /etc/yum.repos.d, on Debian based systems?
+/etc/apt/sources.list.d
+
+What does GCC stand for? What does it do?
+GNU Compiler Collection. It compiles software.
+
+What are the 3x commands to remember for software compilation?
+- ./configure
+- make
+- make install
+
+In order to completely uninstall software that you compiled, what do you need and why?
+The ‘makefile’ that was generated when the software was compiled and installed.
+It contains a list of all of the directories and files created during install, which you can use to remove them.
+
+Using apt, how do you list the dependencies that software is reliant on?
+apt-cache depends [SOFTWARE]
+
+What command can you use to list, in-depth, exactly what an installed software/command requires to run?
+ldd [COMMAND]
+
+What is the curl option for downloading a file?
+-o
+
+What is the wget option for downloading to a different directory than the pwd?
+-P
+
+What is the wget option for downloading a file as a background process?
+-b
+
+If you wanted to download files from the internet recursively, would you use wget or curl?
+wget. Curl does not have that functionality.
+
+What is another name for sandboxing?
+jailing
+
+Name the 3 pieces of software for sandboxing
+- Snap
+- Flatpak
+- AppImage
+
+What command would you use to install a sandboxes software package on Ubuntu?
+snap install [PACKAGE]
+
+What command would you use to soft information about a sandboxed piece of software on Ubuntu?
+snap info [SOFTWARE]
+
+What are Flatpak repositories called?
+Remotes
+
+What would be the command to install the software package ‘myapplication’ from Remote ‘org.demo.sample’?
+A ‘Remote’ is a flatpak repository, so; flakpak install myapplication org.demo.sample
+
+Which of the major snadboxing applications provides the ability to run a sandbox as a mounted drive?
+AppImage
+
+What is the equivalent of dnf and apt within SUSE Linux?
+ZYpper
+
+What extension is used for the file(s) that are supplied alongside an application source code, that provides a list of necessary libraries for the software? What are these files known as?
+.h (Header Files)
+
+What extension do Software Libraries use?
+.a
+
+What Yum command would provide a list of dependencies that a package requires?
+yum deplist [PACKAGE]
+
+Which sandboxing software provides the ability to manage software on a system-wide or per-user basis?
+
+Flatpak
+
+What are the 3 types of Storage Design?
+
+- File storage
+- Block storage
+- Object storage
+
+What are the 3 Storage Interface types?
+
+- Serial Advanced Technology Attachement (SATA)
+- Small Computer Systems Interface (SCSI)
+- Serial Attached SCSO (SAS)
+
+What is the cheapest, but slowest, storage interface, that acts as a good all-round solution?
+
+SATA
+
+What is the most expensive, but fast, storage interface, for mission-critical storage?
+
+SAS
+
+Which storage interface can be attached in a chain, making them scale better?
+
+SCSI
+
+What are the 2 methods of tracking partition divisions?
+
+- Master Boot Record (MBR)
+- GUID Partition Table (GPT)
+
+What are the 3 drawbacks of the MBR?
+
+- Max of 2 TB for a partition
+- Max of 4 Primary partitions
+- Boot data is in one sector, increasing corruption likelihood
+
+Which is better, MBR or GPT?
+
+GPT
+
+What does FUSE stand for?
+
+Filesystem in Userspace
+
+Does Linux support FUSE?
+
+Yes
+
+What /etc/fstab options need to be in place, in order for Storage Quotas for users and groups to be available?
+
+- usrquota
+- grpquota
+
+Name the 3 commands that are used for displaying device information
+
+- hwinfo
+- lsblk
+- lsscsi
+
+What is the option for the lsscsi command that shows the size of a disk?
+
+-s
+
+What are the 5 steps to deploy storage?
+
+ID PFM
+
+1. Install
+2. Detect
+3. Partition
+4. Format (create FS)
+5. Mount
+
+What 2 commands are available to split a disk in to partitions within Linux?
+
+- fdisk
+- parted
+
+What fdisk command would you use to start editing partitions on /dev/sdc?
+
+fdisk /dev/sdc
+
+What fdisk option would you use to show a current partitions information?
+
+-l
+
+What command should be run after amending partitions via either fdisk or parted?
+
+partprobe
+
+What file contains partition information?
+
+/proc/partitions
+
+What parted command would create a GPT table?
+
+mklabel gpt
+
+What parted command would create a new EXT4 Primary partition that starts at 1MB and ends at 2000MB?
+
+mkpart primary ext4 1MB 2000MB
+
+What parted command displays newly entered partition information, before exiting parted?
+
+print
+
+What command would you use to get the UUID of a partition?
+
+blkid
+
+What command would create an EXT4 filesystem on /dev/sda2? Name both syntax methods.
+
+- mkfs.ext4 /dev/sda2
+- mkfs -t ext4 /dev/sda2
+
+What are the advantages of XFS, over EXT4?
+
+- XFS recognises a larger partition size
+- XFS recognises a larger file size
+- XFS avoids inode exhaustion
+
+What package would need to be installed to provide information and troubleshooting facilities for Btrfs?
+
+btrfs-tools
+
+What command would display information about a Btrfs formatted FS?
+
+btrfs filesystem show
+
+What commands can you use to test that a new storage area is mounted and accessible?
+
+- du
+- df
+
+What are the 2 methods you could choose from for automatically mounting a partition?
+
+- /etc/fstab
+- systemd.mount
+
+What is the systemd command for displaying mounted partition information?
+
+systemctl -t mount
+
+What command would you use to resize an EXT2/3/4 filesystem only, but not the underlying partition?
+
+resize2fs
+
+What command would you use to enable journaling on an EXT2 or EXT3 filesystem?
+
+tune2fs
+
+What command would allow configuration of parameters associated with EXT2/3/4 filesystems, such as reserved block counts and time intervals between checks?
+
+tune2fs
+
+What command would you use to dump EXT2/3/4 filesystem information?
+
+dumpe2fs
+
+What command would be useful for troubleshooting a faulty filesystem?
+
+dumpe2fs
+
+Name the 7 XFS commands/tools you can use to work with XFS filesystems
+
+DR MAGIC
+
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/c0932e17-5e51-49c4-89ac-ac224695e41c/Untitled.png)
+
+- xfs_debug
+- xfs_repair
+- xfs_metadump
+- xfs_admin
+- xfs_growfs
+- xfs_info
+- xfs_copy
+
+What are the 3 layers of the LVM?
+
+1. Physical Volumes
+2. Volume Groups
+3. Logical Volumes
+
+Which directory contains all Logical Volumes that are managed by LVM?
+
+/dev/mapper/
+
+List the similarly-named commands (beginning with pv, vg and lv) that exist for managing Physical Volumes, Volume Groups and Logical Volumes, for example “pvscan, vgscan and lvscan”
+
+- (pv/vg/lv)scan
+- (pv/vg/lv)create
+- (pv/vg/lv)display
+- (pv/vg/lv)change
+- (pv/vg/lv)ck
+- (pv/vg/lv)remove
+
+In order, what commands would you use to create an LVM mount point, all the way from generating the Physical Volume to mounting the filesystem?
+
+1. pvcreate
+2. vgcreate
+3. lvcreate
+4. mkfs
+5. mount
+
+What command would create a Volume Group called ‘vg01’, using Physical Volumes /dev/sdb and /dev/sdc?
+
+vgcreate vg01 /dev/sdb /dev/sdc
+
+What command would create a Logical Volume with the name ‘lv01’, 300G in size, within Volume Group vg01?
+
+lvcreate —name lv01 —size 300G vg01
+
+What command would you use to work with LUKS (interact with the mapping between an encrypted device and a virtual device name)?
+
+cryptsetup
+
+Name 6x LUKS actions, i.e.; cryptsetup [ACTION]
+
+- luksformat
+- isluks
+- luksopen
+- luksclose
+- luksaddkey
+- luksdelkey
+
+What command is used to securely delete and override data on disk?
+
+shred
+
+What does RAID stand for?
+
+Redundant Array Of Independent Disks
+
+What is RAID 0?
+
+Disk partitions are ‘striped’ over at least 2 disks, improving performance but provided no redundancy.
+
+What is RAID 1?
+
+A mirror copy of one disk on to at least one other disk. Great for redundancy, but an inefficient use of disk space.
+
+What is RAID 5? How many disks are needed?
+
+Data is ‘striped’ over multiple disks, but also parity information. This means that fault tolerance is provided; if a disk fails, the other disks take up the slack.
+
+Requires at least 3 disks.
+
+What is the Linux command to manage RAID at a software level?
+
+mdadm
+
+Where does the software-based RAID mdadm command store messages and status information?
+
+/proc/mdstat
+
+What are the 2 common network file systems used to make files available from a NAS?
+
+- Network File System (NFS)
+- Server Message Blocks (SMB)
+
+In an entirely Linux-based LAN, which network file system protocol is best to use?
+
+NFS
+
+In a mixed Linux-and-Windows LAN, which network file system protocol is best to use?
+
+SMB
+
+What does SAN stand for?
+
+Storage-Area Network
+
+What is the difference between a NAS and a SAN?
+
+NAS is a simpler and more affordable solution for general file sharing and storage, while SAN is a more complex and expensive solution for high-performance storage requirements of large-scale enterprise applications.
+
+What command is used to show information about Fibre Channel devices attached to a SAN server?
+
+fcstat
+
+What is the fcstat option for viewing link statistics?
+
+link_stats
+
+What SAN-related command shows information about multipathing?
+
+multipathd
+
+What command can be used to check for storage connectivity issues?
+
+multipathd
+
+What are 2x Protocols that could be used by a SAN?
+
+- iSCSI
+- Fibre Channel
+
+---
+
+What does IOPS stand for?
+
+Input / Output Operations Per Second
+
+What 2x commands would be used to create disk throughput reports?
+
+- iostat
+- ioping
+
+Name 3x common I/O Schedulers
+
+- Deadline
+- CFQ
+- Noop
+
+Which I/O scheduler is best for multi-threaded workloads?
+
+Deadline
+
+Which I/O scheduler is the default in most Linux distros, and offers good performance in most workload situations?
+
+Complete Fair Queueing (CFQ)
+
+Which I/O scheduler is the simplest, and is best for SSDs and USB flash drives?
+
+Noop
+
+What 5x options are available to you when you meet a storage capacity challenge?
+
+The SS MAD
+
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/9076fe5a-1ca9-4505-8c7b-2e85d8a310d4/Untitled.png)
+
+- Scaling up; increase Logical Volume or Partition size, if the space is available
+- Scaling Out; add more disks
+- Move the data
+- Archive and compress the data
+- Delete unused data
+
+What is STaaS?
+
+Cloud Storage As A Service
+
+What command would display the percentage of inodes that have been used on a filesystem?
+
+df -i
+
+What command would display information about the number of inodes a specific directory was taking up on the filesystem?
+
+du —inodes -d [DIR]
+
+Which filesystem type is the most susceptible to inode exhaustion, and which is the least susceptible?
+
+EXT4 is the most susceptible
+
+XFS is the least susceptible
+
+What must you do with a disk volume in order to scan it with fsck?
+
+It needs to be unmounted
+
+What command overrides data on a Solid State Drive that has previously just been marked as ‘available’ after a file has been deleted?
+
+fstrim
+
+What 3x commands can be used to display hardware information?
+
+- hwinfo
+- dmidecode
+- lspci
+
+What command can be used to confirm a proper disk type is installed and compatible with the storage controllers?
+
+hwinfo —storage
+
+What hwinfo option is used for viewing CPU information?
+
+—cpu
+
+What hwinfo option is used for viewing NIC information?
+
+—netcard
+
+What hwinfo option is used for viewing storage disk information?
+
+—disk
+
+What hwinfo option is used for viewing USB controller information?
+
+—usb
+
+Which command that displays hardware information would also show opportunities for upgrade, by detailing maximum processor and memory possibilities?
+
+dmidecode
+
+What dmidecode option is used to display information about a specific device type, e.g.; cpu?
+
+-t
+
+What 2x commands display information about devices attached to specific busses, similar to Device Manager in Windows?
+
+- lspci
+- lsusb
+
+What is the name of the Device Manager that, for example, picks up added or removed hardware on-the-fly?
+
+udev
+
+What command is associated with udev?
+
+udevadm
+
+What command and option would show, in real time, a device being added to the system and the device’s information?
+
+udevadm monitor
+
+What udevadm option would display device information?
+
+info (for example, udevadm info /dev/sda)
+
+When using ls to display files, what does a ‘b’ or a ‘c’ mean, at the start of the line? (where ‘d’ would denote the file is a directory)
+
+- b is a Block Device
+- c is a Character Device
+
+What is the difference between a Block Device and a Character Device?
+
+- A Block Device is something that processes I/O in blocks, and can be mounted, for example a storage device.
+- A Character Device is something that processes I/O on a per-character basis, such as a Keyboard or Mouse.
+
+What are the 3x Special Device Files?
+
+- /dev/null
+- /devzero
+- /dev/urandom
+
+What file contains CPU information, including CPU cache information?
+
+/proc/cpuinfo
+
+What 3x commands show Memory information?
+
+- lsmem
+- free
+- sar
+
+What file contains Memory information?
+
+/proc/meminfo
+
+What pgrep option also displays the name of the command associated with a PID?
+
+-l
+
+Other than pgrep, what other command is available to list the PID for a given process name?
+
+pidof
+
+What are the 3 ways of ending processes?
+
+- SIGTERM
+- SIGKILL
+- SIGHUP
+
+What signal number is SIGTERM?
+
+-15
+
+What signal number is SIGKILL?
+
+-9
+
+Which process-ending signal gracefully shuts down a process?
+
+SIGTERM (-15)
+
+What does the SIGHUP signal do?
+
+Shuts down a process when the shell that is running that process is closed.
+
+What command would shut down all processes to do with the application ‘firefox’, using SIGKILL?
+
+pkill -9 firefox
+
+What ‘top’ key combination would show resources based on CPU consumption?
+
+SHIFT+P
+
+What ‘top’ key combination would show resources based on Memory consumption?
+
+SHIFT+M
+
+Within ‘top’, what does the %st column show?
+
+‘Steal’. This relates to how long a vCPU is awaiting a physical CPU to provide resource to it.
+If this value is high, it means the physical CPU is not providing enough resource to the vCPU.
+
+Which command displays open files and the process(es) associated with them?
+
+lsof
+
+Which lsof option will show files currently open by a specific user?
+
+-u
+
+Which lsof option will show files currently open by a specific process?
+
+-c
+
+What command shows which processes are consuming the most time during system boot?
+
+systemd-analyze blame
+
+What command is useful for **creating a report** on what process(es) are taking up CPU over an extended period of time?
+
+sar
+
+What command would show both parent and child processes in an easy-to-read format?
+
+pstree
+
+Name the 4x process states
+
+- Running (normal operation)
+- Sleeping (awaiting access to resource)
+- Stopped (exiting)
+- Zombie (child processes send the exit status to parent process, to be released for exiting)
+
+What are the 2x substates of the ‘Sleeping’ state, for a process? What do they mean?
+
+- Interruptible - The process is waiting for a timeslot or event before attempting to run.
+- Uninterruptible - The process is waiting for a time-out value before attempting to run.
+
+What is the range for the priority levels used by ‘nice’?
+
+-20 to 19
+
+What priority level, for ‘nice’, is the highest?
+
+-20
+
+What priority level, for ‘nice’, is the lowest?
+
+19
+
+What command changes the priority level of an already existing process?
+
+renice
+
+What do you add to the end of a command to make it run as a background job?
+
+[SPACE] &
+
+What command would you use to tell a script/command to continue running, even when the current user profile logs off?
+
+nohup [COMMAND]
+
+You’ve listed running jobs with ‘jobs’ and want to bring to the terminal job number 3. What command would you use?
+
+fg %3
+
+What 2x things do you need to do, in order to send the currently running command back to being a background job?
+
+1. CTRL+Z to pause the command
+2. bg %1
+
+What’s the difference between a stopped process and a zombie process?
+
+Stopped processes are terminating and releasing their resources. Zombie processes are child processes awaiting parent-process acceptance of their termination.
+
+What is the recommended level of Swap Space?
+
+1.5x Memory/RAM
+
+What are the 3x Swap types?
+
+- Device swap
+- File system swap
+- Pseudo swap
+
+What command creates or moves Swap Space?
+
+mkswap
+
+What commands enable or disable swap space?
+
+swapon
+
+swapoff
+
+What command displays used Virtual Memory information?
+
+vmstat
+
+What does OOM stand for?
+
+Out Of Memory
+
+What does OOM Killer do?
+
+Kills applications that are causing over-allocated Memory issues
+
+Where does OOM Killer send it’s logs?
+
+/var/log/messages
+
+What is it called when software running in the User Space makes use of resources in the Kernel Space?
+
+a System Call.
+
+Are device drivers part of the Kernel?
+
+No. They can be updated without making any changes to the Kernel.
+
+What is a Kernel Module?
+
+A kernel module is a system-level object that extends the functionality of the kernel.
+
+What are the benefits of using Kernel Modules?
+
+- They reduce burden on the Kernel
+- They lower RAM consumption
+- They extend the functionality of the system
+- They avoid requirements for rebuilding the Kernel or rebooting the system
+
+What is the extension for a Kernel Module?
+
+.ko
+
+What 3x commands are used to work with Kernel Modules? What do they do?
+
+- lsmod - List modules
+- modinfo - Info about modules
+- modprobe - Add and remove modules
+
+Should you use insmod and rmmod for managing Kernel Modules?
+
+No. Use modprobe instead.
+
+What modprobe option installed a module?
+
+-a
+
+What modprobe option uninstalls a module?
+
+-r
+
+What modprobe option does a ‘test run’, showing you what would happen without actually running it?
+
+-n
+
+In order for modprobe to function correctly, it relies on a which file to find out how modules are linked to one another?
+
+modules.dep
+
+What command populates the modules.dep file?
+
+depmod
+
+What is the word used for a section/function within a Kernel module that is made available for other modules to use?
+
+A Symbol.
+
+What directory holds Kernel modules?
+
+/usr/lib/modules/[KERNEL VERSION]/kernel/
+
+What file and/or directory locations are used to configure Kernel Module settings and aliases?
+
+/etc/modprobe.conf or /etc/modprobe.d/
+
+Which directory contains Kernel Parameters that can be amended whilst the system is still running?
+
+/proc/sys
+
+What command is used to amend Kernel Parameters whilst the system is still running?
+
+sysctl
+
+What sysctl option displays all Kernel Parameters and their current values?
+
+-a
+
+What sysctl option ignores errors about unknown keys?
+
+-e
+
+What file enables configuration changes to the running Kernel?
+
+/etcsysctl.conf
+
+Name the 4x common causes of a Kernel Panic
+
+- The kernel itself is corrupt or has a config issue
+- systemd didn’t start properly on boot
+- the root filesystem can’t be mounted
+- Hardware issues
+
+What command, and associated log file, log messages to do with the Kernel Message Buffer, such as the status of Kernel modules and issues with Kernel components?
+
+dmesg and /var/log/dmesg
+
+What dmesg option both colour codes the output and displays the time of messages in a Human Readable format?
+
+-H
+
+What operation, usually disabled by default, serves as a crash report for application crashes?
+
+A Core Dump.
+
+What command can be used to view logs, to assist in investigating application or system crashes?
+
+journalctl
+
+What was the old initialization mechanism, before ‘systemd’?
+
+SysVinit
+
+What’s the difference between Services and Daemons?
+
+Services are interactive, Daemons are not.
+
+What does systemd use to track and categorize processes?
+
+Control Groups (cgroups)
+
+In the ‘background’, what does Masking a service actually do?
+
+Creates a symlink to /dev/null
+
+What directory contains systemd unit files?
+
+/lib/systemd/system
+
+What directory contains systemd unit configuration files?
+
+/etc/systemd/system
+
+What does the [Unit] section of a unit configuration file manage?
+
+- Unit name
+- The unit’s relationship to other units, such as Wants= and Requires=
+
+What does the [Install] section of a unit configuration file manage?
+
+- The results of Enable and Disable actions
+- WantedBy= and RequiredBy=
+
+In systemd service configuration files, what is the difference between Requires= and Wants=?
+
+- Requires= means a service will attempt to start listed services first, and FAIL if one of them does not start
+- Wants = means a service will attempt to start listed services first, and will CONTINUE ANYWAY if one of them does not start
+
+What “extension” do Systemd files have when they manage a time-based event?
+
+.timer
+
+What are the 2x expressions available for Systemd .timer files?
+
+- OnBootSec
+- OnCalendar
+
+Name the 4x most common options used under [Mount] in a Systemd .mount file
+
+- What=
+- Where=
+- Type=
+- Options=
+
+What is different in Systemd .mount configuration files, regards file paths?
+
+Where Linux paths contain forward slashes as delimiters, systemd .mount unit files use the dash character instead.
+
+A path that might normally read /mnt/projects/servers becomes mnt-projects-servers.
+
+What are the 4x most common Systemd targets that represent system startup configuration?
+
+- default
+- multi-user.target
+- graphical.target
+- network-online
+
+What command states the current Systemd target?
+
+systemctl get-default
+
+What command changes the current Systemd target, immediately, to CLI only?
+
+systemctl isolate multi-user.target
+
+What command changes the current Systemd target default to GUI?
+
+systemctl set-default graphical.target
+
+If a Systemd service is disabled, can other services still launch it?
+
+Yes, they can. If you want to set it so that other services cannot launch it, you must **mask** the service also.
+
+What are the 7x runlevels of SysVinit?
+
+Think about what ‘init 6’ does, for example.
+
+0 - Halt / Shutdown
+
+1 - Single User Mode
+
+2 - Multi-User CLI, No Network
+
+3 - Multi-User CLI, Network
+
+4 - Unused
+
+5 - Multi-User GUI, Network
+
+6 - Reboot
+
+What 2x SysVinit commands manage enabling and starting services?
+
+- service
+- chkconfig
+
+What are the 8x rsyslog Severities?
+
+E ACE WNID
+
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/1a69bec3-1dcd-40f0-bfa3-d2519bfe527e/Untitled.png)
+
+- 0 - emerg
+- 1 - alert
+- 2 - crit
+- 3 - error
+- 4 - warn
+- 5 - notice
+- 6 - info
+- 7 - debug
+
+What is the configuration file for rsyslog?
+
+/etc/rsyslog.conf (or /etc/rsyslog.d/*)
+
+What is the equivalent of /var/log/secure on Debian based systems?
+
+/var/log/auth.log
+
+What the 2x possible daemons that manage the time on a server?
+
+- ntpd
+- chronyd
+
+What port do ntpd/chronyd use?
+
+123
+
+What 2x chronyc commands show detailed configuration, status and sync information?
+
+- chronyc -n tracking
+- chronyc activity
+
+Where are the per-user crontabs stored?
+
+/var/spool/cron/crontabs
+
+In order, what are the first 5 columns of a crontab entry?
+
+Minute, Hour, Day of Month, Month, Day of Week
+
+What command allows a one-time run of a command at a specific time/date?
+
+at
+
+How would you use ‘at’ to schedule the command ‘ls -la’ to run at 6pm today?
+
+ls -la | at 6 pm
+
+What command lists ‘at’ scheduled jobs?
+
+atq
+
+How would you use ‘at’ to schedule the command ‘ls -la’ to run in 4 hours?
+
+ls -la | at now + 4 hours
+
+What is the Apache configuration file?
+
+/etc/httpd/conf/httpd.conf
+
+As a minimum, what 2x directives need to be edited, in httpd.conf, for a basic website deployment?
+
+- Listen
+- DocumentRoot
+
+What command would open firewall port 80 up permanently, so that a localhost Apache site could be reached?
+
+firewall-cmd —permanent —zone=public —add-service=http
+
+After amending firewall rules, what command do you need to run?
+
+firewall-cmd —reload
+
+What is the NFS service called?
+
+nfs-server.service
+
+What 2x ports does NFS rely on?
+
+- 111
+- 2049
+
+What file needs amending to allow presentation of a local directory to other servers, as an available NFS?
+
+/etc/exports
+
+What command would tell you which NFS mount points, on server 192.168.1.10, are available to mount to your current server?
+
+showmount -e 192.168.1.10
+
+What is the print management system called on modern Linux distros? What service does it use?
+
+CUPS and cups.service
+
+What port does CUPS use?
+
+631
+
+What 2x files are used to configure CUPS?
+
+- /etc/cups/cupsd.conf
+- /etc/cups/cups-files.conf
+
+What command submits print requests to a printer?
+
+lpr
+
+What command lists existing print jobs?
+
+lpq
+
+What file does the ‘date’ command reference?
+
+/etc/localtime
+
+What command is used to set the system date and time information?
+
+timedatectl
+
+What command is used to set the system locale and keyboard layout settings?
+
+localectl
+
+On Red Hat systems, which directory contains special files for all possible regional time zones that a system can be set to use?
+
+/usr/share/zoneinfo
+
+What symbolic link file can you create, to a special file within /usr/share/zoneinfo, to set the system’s timezone?
+
+/etc/localtime
+
+On Debian based systems, which file can you cat to view the currently set timezone?
+
+/etc/timezone
+
+What is the date subcommand syntax for displaying the name of the month?
+
++B%
+
+What is the date subcommand syntax for displaying time representation based on the current locale?
+
++X%
+
+What is the date subcommand syntax for displaying the time in 24-hour format (including a.m./p.m.)?
+
++%H
+
+What are the 4 layers of the TCP/IP protocol suite? What are examples of each one?
+
+1. Application - HTTP, FTP, SMTP
+2. Transport - TCP & UDP
+3. Internet - IP
+4. Network access - Hardware such as Ethernet or Wireless
+
+What does NIC stand for?
+
+Network Interface Card
+
+What does MAC stand for, in the context of hardware?
+
+Media Access Control
+
+What does a network Switch do?
+
+A **switch** acts as a concentrator, centralizing all network connections for a segment to a single device.
+
+What OSI layer do Switches usually sit within?
+
+Layer 2
+
+What does a Router do?
+
+**Routers** act as control points for communications between network segments
+
+What OSI layer do Routers usually sit within?
+
+Layer 3
+
+What is the purpose of a Subnet Mask?
+
+It indicates where in the IP address the division is between the network ID and the host ID.
+
+For each of the IPv4 Address Classes, name the octet range that their IP addresses would **begin** with
+
+- Class A - 0 to 127
+- Class B - 128 to 191
+- Class C - 192 to 223
+- Class D - 224 to 239
+- Class E - 240 to 255
+
+What are the 3x IP ranges, within IPv4 Address Classes A-C, that are reserved?
+
+- **Class A Reserved:** 10.0.0.0–10.255.255.255
+- **Class B Reserved:** 172.16.0.0–172.31.255.255
+- **Class C Reserved:** 192.168.0.0–192.168.255.255
+
+What is the name of the service that dynamically allocates IP addresses to nodes on a network?
+
+Dynamic Host Configuration Protocol (DHCP)
+
+What port is SSH?
+
+22
+
+What port is SMTP?
+
+25
+
+What port is HTTP?
+
+80
+
+What port is NTP?
+
+123
+
+What port is  HTTPS?
+
+443
+
+What service runs on port 22?
+
+SSH
+
+What service runs on port 25?
+
+SMTP
+
+What service runs on port 80?
+
+HTTP
+
+What service runs on port 123?
+
+NTP
+
+What service runs on port 443?
+
+HTTPS
+
+What has the command ‘ifconfig’ been replaced by, in recent Linux distros?
+
+ip
+
+What ‘ip’ command would display IP address information for all interfaces?
+
+ip addr show
+
+What ‘ip’ command displays the status of each interface?
+
+ip link
+
+What ‘ip’ command would bring down the interface eth1?
+
+ip link set eth1 down
+
+What is the purpose of the iwconfig command?
+
+To provide wireless NIC configurations, including settings such as SSID and encryption information.
+
+What command would set a nickname of ‘first_nic’ for a wireless NIC currently called ‘abc123nic’?
+
+iwconfig abc123nic nickname "first_nic”
+
+What is the most fundamental command used in NetworkManager?
+
+nmcli
+
+What NetworkManager command would show identification information for each NIC on a system?
+
+nmcli connection show
+
+What NetworkManager command would show a summary of network connectivity data?
+
+nmcli general status
+
+What NetworkManager command would disabled the NIC ‘Wired connection 1’?
+
+nmcli con down “Wired connection 1”
+
+What NetworkManager command would give an interactive mode to configured NIC ‘Wired connection 1’?
+
+nmcli con edit “Wired connection 1”
+
+What NetworkManager command would give you a **Text-based User Interface**, with which to configure network options?
+
+nmtui
+
+What NetworkManager command would give you a **Graphical User Interface**, with which to configure network options?
+
+nmgui
+
+For non-Debian based distrubutions, what directory contains network device configuration files?
+
+/etc/sysconfig/network-scripts
+
+For Debian based distrubutions, what directory contains network device configuration files?
+
+/etc/network
+
+What file is used to configure whether networking should be enabled at boot time and to configure hostname and gateway information?
+
+/etc/sysconfig/network
+
+What utility/command, that isn’t always installed by default, provides networking information such as modes, speed, duplex config and Wake-on-LAN settings?
+
+ethtool
+
+What command would execute a self-test on NIC eth1?
+
+ethtool -t eth1
+
+What command would flash a firmware image to the NIC eth1?
+
+ethtool -f eth1
+
+What kind of server leases IP addresses?
+
+A DHCP Server (Dynamic Host Configuration Protocol)
+
+What is the primary DHCP client reference/configuration file?
+
+/etc/dhcp/dhclient.conf
+
+What command would release the current IP address configuration?
+
+dhclient -r
+
+What file contains configuration for which DNS servers a system should use, to resolve domain names to IP Addresses?
+
+/etc/resolv.conf
+
+What file contains, along with other configuration, the order in which domain name resolution methods should take place?
+
+/etc/nsswitch.conf
+
+What command manages the route table on a local system, such as setting static routes, after any IP address configurations, such as IP address, subnet mask, and default gateway, have been set?
+
+route
+
+What command adds a new route to the kernel’s IP routing table, reaching out to 192.168.2.0, using subnet mask 255.255.255.0, via eth0?
+
+route add -net 192.168.2.0 netmask 255.255.255.0 dev eth0
+
+What 2x files are involved in the configuration of SSH on systems? Which is usually customized and which is not?
+
+- /etc/ssh/ssh_config (usually not customized)
+- /etc/ssh/sshd_config (customized)
+
+What should you do after making changes to the sshd_config file?
+
+Restart the SSHD service to pick up the changes; systemctl restart sshd
+
+After using ssh-keygen to generate private and public key files, which command would you use to send the public key to root@server1, so that you could connect to it, going forwards, without entering a password?
+
+ssh-copy-id root@server1
+
+If you wanted to download files recursively, would you use curl or wget?
+
+wget, because curl does not have the ability to download recursively.
+
+What ‘curl’ option downloads a file?
+
+-o
+
+What netcat command would port scan ports 1-1000 of example.com?
+
+netcat -z -v example.com 1-1000
+
+What is the difference between scp and sftp?
+
+- scp is used purely for transferring files, sftp can transfer files and manage files and directories.
+- sftp also supports resuming file transfers, whereas scp does not.
+
+What command would synchronize the directory /home/dir1 on the localhost with the same location on server123, as user jbloggs, only copying file differences?
+
+rsync -a /home/dir1 jbloggs@server123:/home/dir1
+
+What port does Cockpit use as default?
+
+9090
+
+If a client attempts to lease an IP address from DHCP, but fails, what would it’s IP address begin with, locally?
+
+169.254.*
+
+What command would display connectivity information, including the server’s SSL certificate?
+
+openssl s_client -client foo.com:443
+
+What command, similar to ‘top’, is useful for viewing bandwidth usage?
+
+iftop
+
+What command, run both client side and server side, can be used to test the maximum throughput an interface will support?
+
+iperf
+
+What command is similar to traceroute, but does not require elevated privilege to run?
+
+tracepath
+
+What systemd command queries name resolution services, to allow checking of alignment of IP addresses and domain/host names?
+
+resolvectl query [domain name]
+
+What command gives output that includes the IP address mapped to a domain name, the DNS server that answered the query, and how long it took to receive an answer?
+
+dig [domain name]
+
+What command tests name resolution and is also available on both Linux and Windows by default?
+
+nslookup
+
+Name the 5 commands that are useful for troubleshooting name resolution failures.
+
+- resolvectl
+- dig
+- nslookup
+- host
+- whois
+
+What protocol relates IP address to MAC addresses?
+Address Resolution Protocol (ARP)
+
+What command would clear the Address Resolution Protocol cache for 192.168.12.34?
+
+arp -d 192.168.12.34
+
+What command would show the current contents of the Address Resolution Protocol cache?
+
+arp -a
+
+What three major areas of an enterprise network can firewalls be found?
+
+- host-based
+- segment network-based
+- perimeter network-based
+
+What three elements are firewall rules usually based on?
+
+- Traffic type (service or port)
+- Traffic destination (inbound or outbound)
+- Traffic interface (interface)
+
+What are the two types of firewalls, and what is the difference between them?
+
+- Stateless - check individual packet address information, such as source, destination, and protocol
+- Stateful - More robust; they delve into more detail. They inspect the packet contents and identify the behavior of the connection and how the data changes throughout the network communication process.
+
+What two tools are used to manage firewalls? Which is more modern?
+
+- iptables - older
+- nftables - modern
+- 
+
+What command would list the current iptables rules?
+
+iptables -L
+
+In iptables rules, which three actions could be applied to a packet?
+
+- ACCEPT
+- DROP
+- RETURN
+
+What are the five default iptables tables?
+
+- filter
+- nat
+- mangle
+- raw
+- security
+
+If one wants to make persistent any rules they have applied via the iptables command, what must be done next, on RHEL based systems and on Ubuntu based systems?
+
+- RHEL - install iptables-services and run ‘service iptables save’
+- Ubuntu - install iptables-persistent
+
+Does firewalld use iptables or nftables?
+
+What command is used to configure the firewall on a system using firewalld?
+
+firewall-cmd
+
+What command would list all available firewalld zones?
+
+firewall-cmd —get-zones
+
+What firewalld command would add TCP port 21 to the perimeter network?
+
+firewall-cmd --zone=dmz --add-port=21/tcp
+
+Changes to firewalld zones are not persistent. What would you need to do to make them persistent?
+
+Tack ‘—permanent’ on to any firewall-cmd commands that configure zone rules
+
+What command is needed to make any permanent firewalld zone changes take effect immediately, rather than after reboot?
+
+firewall-cmd —reload
+
+What does UFW stand for?
+The Uncomplicated Firewall
+
+What file contains high-level UFW configuration such as policy defaults and kernel module usage?
+
+/etc/default/ufw
+
+What directory contains granular UFW configuration?
+
+/etc/ufw/
+
+What Uncomplicated Firewall command would allow HTTP traffic?
+
+ufw allow http/tcp
+
+What is the firewalld alternative for complex, high-performance, segmentation situations?
+
+nftables
+
+What command combines ping and traceroute information, as well as testing the quality of a network connection?
+
+mtr
+
+What command is similar to netstat, but provides simpler output and syntax?
+
+ss (Socket State)
+
+What ss subcommand would display listening sockets?
+
+-l
+
+What ss subcommand would display connections **from** a specific IP?
+
+ss src [IP Address]
+
+What ss subcommand would display connections **to** a specific IP?
+
+ss dst [IP Address]
+
+What lsof subcommand displays network sockets that are in use?
+
+-i
+
+The results of a tcpdump, when written to file, are not easily readable by simply ‘cating’ the file. What command can be used to read the file instead?
+
+tcpdump -r [File]
+
+What tcpdump command would capture DNS traffic on interface eth0?
+
+tcpdump -i eth0 port 53
+
+What terminal-based command is available for Wireshark, that would capture packets on interface eth0?
+
+tshark -i eth0
+
+What Nmap subcommand would output to a basic text file in a Human-readable format?
+
+-oN
+
+What Nmap subcommand would output to a text file that would be useful for grep, awk, diff and other similar commands, but is not necessarily very Human-readable?
+
+-oG
+
+## Hardening
+
+---
+
+What is the CIA Triad?
+
+The three primary goals that System Security should satisfy; Confidentiality, Integrity and Availability.
+
+What are the three states in which data can be encrypted?
+
+- Passing through a network (in transit)
+- Accessed in memory (in use)
+- Stored (at rest)
+
+What does FDE stand for?
+
+Full Disk Encryption
+
+What is non-repudiation encryption used for?
+
+It proves the source of the data; only a specific sender could have been capable of encrypting the data in the manner that it is, proving it came from them.
+
+What are single key and a-pair-of-keys encryption methods known as?
+
+- Symmetric (a single key
+- Asymmetric (a key pair, public and privates keys)
+
+What does PKI stand for?
+
+Public Key Infrastructure
+
+What does TLS stand for?
+
+Transport Layer Security
+
+How would you tell that a website was using TLS?
+
+The URL would contain HTTPS and the TLS/SSL certificate would be available to view.
+
+What does SSL stand for?
+
+Secure Sockets Layer
+
+What is the use case for Wildcard Certificates?
+
+Instead of an organisation requiring multiple certificates for subdomains, for example www.[example].com, mail.[example].com and ftp.[example].com, they could use a ‘Wildcard Certificate’ that would support anything within the same domain.
+
+What are the two most command hash functions for testing data integrity on a Linux system?
+
+- Message Digest 5 (MD5)
+- Secure Hash Algorithm (SHA)
+
+What command would calculate the MD5 hash of a file or standard input?
+
+md5sum
+
+What commands would calculate the SHA hashes of a file or standard input? (4 total)
+
+- sha1sum
+- sha256sum
+- sha384sum
+- sha512sum
+
+What does IAM stand for?
+
+Identity and Access Management
+
+What does PAM stand for?
+
+Pluggable Authentication Modules
+
+What does LDAP stand for?
+
+Lightweight Directory Access Protocol
+
+What does SSSD stand for?
+
+System Security Services Daemon
+
+What does OTP stand for?
+One Time Password
+
+What does MFA stand for?
+Multi-Factor Authentication
+
+What are the three Factors of Multi-Factor Authentication?
+
+- Something you know
+- Something you have
+- Something you are
+
+Where are PAM configuration files located?
+
+/etc/pam.d/, however in rare cases it may also be /etc/pam.conf
+
+For each PAM configuration file in /etc/pam.d directory, what are the 4x columns?
+
+Interface, Control Flag, Name, Arguments
+
+What are the 4x Module Interfaces available for PAM configuration files?
+
+- account
+- auth
+- password
+- session
+
+What are the 4x Control Flags available for PAM configuration files?
+
+- optional
+- required
+- requisite
+- sufficient
+
+Regarding PAM, what command would unlock a user account and reset their failure count?
+
+pam_tally2 -r -u user
+
+What 2x PAM files contain user account lockout directives?
+
+- /etc/pam.d/password-auth
+- /etc/pam.d/system-auth
+
+What does DAC stand for?
+
+Discretionary Access Controls
+
+What does MAC stand for, in the context of access configuration?
+
+Mandatory Access Controls
+
+On Linux systems without SELinux, such as Debian and SUSE, what application provides similar functionality?
+
+AppArmor
+
+When listing an object’s SELinux contexts, what are the three main contexts shown?
+
+- User
+- Role
+- Type
+
+For the SELinux User context of objects, what are some common SELinux users?
+
+- unconfined_u (all users)
+- user_u (unprivileged users)
+- sysadm_u (system admins)
+- root (root user)
+
+What is the ‘Type’ context of SELinux?
+
+The ‘label’ portion of MAC. It is a way of grouping objects together that have similar security requirements or characteristics.
+
+What command would list the SELinux Security Context of files and directories?
+
+ls -Z [FILE}
+
+What command would list the SELinux Security Context of a running process?
+
+ps -Z [PID]
+
+What command temporarily changes the Security Context of a file?
+
+chcon
+
+What are the 3x chcon options that directly relate to SELinux contexts?
+
+- -u (User)
+- -r (Role)
+- -t (Type)
+
+What 3x modes can SELinux be in?
+
+- Enforcing
+- Permissive
+- Disabled
+
+Regards SELinux, what does Permissive mode do?
+
+Policies are not enforced, but actions that would have been blocked are logged for review.
+
+What command displays the current SELinux Mode?
+
+getenforce
+
+What command changes the current SELinux Mode, and what are the Modes that can be set?
+
+- setenforce 0 - Set Permissive Mode
+- setenforce 1 - Set Enforcing Mode
+
+What command would configure SELinux policies?
+
+semanage
+
+What command would show you the current mode, policy type and mount point of SELinux?
+
+sestatus
+
+What command would display the on/off boolean statuses for SELinux values?
+
+getsebool
+
+What command would change the on/off value of an SELinux value?
+
+setsebool
+
+What command can be used to help generate SELinux allow rules?
+
+audit2allow
+
+Explain the difference between mv and cp when it comes to SELinux
+
+If you mv a file to another directory, the SELinux context remains the same, because the file has not moved on the disk, only had it’s pointer changed.
+
+If you cp a file, however, the new file gets the SELinux context of the directory in to which it is created.
+
+If a file has been moved, and therefore retains the SELinux context of the directory it came from, what command would resolve this and change the context to that of the new directory?
+
+restorecon
+
+What directory are AppArmor profiles located in?
+
+/etc/apparmor.d/
+
+What is the AppArmor equivalent of SELinux’s Permissive mode?
+
+complain
+
+What command displays the current status of AppArmor profiles?
+
+apparmor_status
+
+What are commands to set each of the 3x AppArmor modes on a specific profile?
+
+- aa-enforce [path to profile]
+- aa-complain [path to profile]
+- aa-disable [path to profile]
+
+What command lists open-network sockets that don’t have an AppArmor profile loaded?
+
+aa-unconfined
+
+What AppArmor command would create a new profile for a file?
+
+aa-autodep [filename]
+
+What AppArmor command would delete a specific profile?
+
+apparmor_parser -R /etc/apparmor.d/[profile name]
+
+What AppArmor command will remove all profiles that are no longer registered?
+
+aa-remove-unknown
+
+What is the difference between Targeted and Strict policy types in SELinux?
+
+Targeted enforces settings against specific resources, whereas Strict enforces settings on all resources other than those specifically excluded.
+
+What bash script command takes input from the user in order to set a variable?
+
+read
+
+What bash script command runs another command, replacing the current shell with this new program’s process (no new process is created)?
+
+exec
+
+What bash script command is the opposite of exec, executing another command within the current shell process?
+
+source
+
+What is the regex character to “replace any character”?
+
+.
+
+What is the regex character to “match the start of a string of characters”?
+
+^
+
+What is the regex character to “match the end of a string of characters”?
+
+$
+
+What is the regex character to “match any one character”?
+
+?
+
+What is the act of referencing or retrieving a variable known as?
+
+Substitution, or Parameter Expansion
+
+Name 7x environment variables
+
+- HOSTNAME
+- SHELL
+- MAIL
+- HOME
+- PATH
+- HISTSIZE
+- USER
+
+What command is used to set an Environment Variable?
+
+export
+
+To set an Environment Variable for all future Bash sessions, what 2x files could you amend?
+
+- .bash_profile for individual users
+- /etc/profile.d/[appropriate file name] for system-wide
+
+What command would display all variables set for the current environment?
+
+env
+
+What command would display all variables set for the current shell?
+
+set
+
+What would be the syntax to create an alias, for the command ‘echo hello’, where you type ‘myalias’ to then run it?
+
+alias myalias=”echo hello”
+
+What’s the syntax for adding 1 to $var, as would be used in a while loop?
+
+((var++))
+
+What’s the syntax for creating a Bash array called ‘people’ with the entries ‘Tom’, ‘Dick’ and ‘Harry’?
+
+people=(”Tom” “Dick” “Harry”)
+
+What’s the Bash syntax for referencing all entries of an array called ‘people’?
+
+${people[*]}
+
+or
+
+${people[@]}
+
+What’s the Bash syntax for a range of numbers between 1 and 9?
+
+{1..9}
+
+What is Globbing?
+
+Globbing is another name for file/path name expansion.
+
+Examples would be ‘*’ for “any characters”, ‘?’ for “one of any character” and ‘[abc]’ for “one of either a, b or c”.
+
+What would be the Bash syntax for an arithmetic operation, such as adding var1 to var2?
+
+Double parentheses, such as $((var1 + var2))
+
+What would be the Bash syntax for comparing two variables, such as seeing if var1 was greater than var2?
+
+[ $var1 -gt $var2 ]
+
+What does IaC stand for?
+
+Infrastructure as Code
+
+What does CI/CD stand for?
+
+Continuous Integration & Continuous Deployment
+
+Name the stages of the CI/CD Loop
+
+- Plan
+- Code
+- Build
+- Test
+- Release
+- Deploy
+- Operate
+- Monitor
+
+![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/f1c405f6-a5fc-44b0-9a3a-c92e8fb092d5/c87a3ade-985a-4fa1-b288-3e4013d3df82/Untitled.png)
+
+What 2x modes do IaC management tools operate in? Explain each.
+
+- Declarative - DevOps define the desired configuration, and the tool applies those settings (rolling a config file).
+- Iterative - DevOps define specific commands to implement configuration (actual commands, rather than files being rolled).
+
+After creating a new server, what orchestration concept can be used to configure settings, install patches, create accounts and other post-install tasks?
+
+Bootstrapping, using cloud-init
+
+What does JSON stand for?
+
+JavaScript Object Notation
+
+What does YAML stand for?
+YAML Ain’t Markup Language
+
+What is the difference between automation and orchestration?
+
+Automation uses a cript or other engine to accomplish a single tasks without Human intervention.
+
+Orchestration embodies a complete solution, such as recognising the need for a new server, deploying it, installing additional software and making it available, all in one.
+
+Name 5x Orchestration utilities
+
+- Ansible
+- Puppet
+- Chef
+- SaltStack
+- Terraform
+
+Which Orchestration utility requires an agent be installed?
+
+Chef
+
+Which Orchestration tool uses Ruby?
+
+Chef
+
+Which Orchestration tool recognises configuration files in Bash, Python, Ruby, YAML and PowerShell>
+
+Puppet
+
+Which Orchestration tool is Event Driven?
+
+Saltstack
+
+Which Orchestration tool can use an Agent or be Agentless?
+
+Saltstack
+
+Which Orchestration tool uses it’s own proprietary language, therefore admins would need some level of training to create orchestration tasks?
+
+Terraform
+
+Which Git subcommand sets options for a repository or Git users, as well as other global options?
+
+config
+
+Which Git subcommand creates a Git repository, or reinitializes an existing one?
+
+init
+
+Which Git subcommand creates a working copy of an existing repository?
+
+clone
+
+Which Git subcommand adds files to be tracked by the Git repository?
+
+add
+
+Which Git subcommand updates the Git repository with your changes, creating a "snapshot" of that repository?
+
+commit
+
+Which Git subcommand displays the status of the repository?
+
+status
+
+Which Git subcommand manages branches, or pointers to specific repository snapshots, after committing changes?
+
+branch
+
+Which Git subcommand integrates changes from one branch into a "main" branch?
+
+merge
+
+Which Git subcommand rewrites Git history for a cleaner, more linear merge history?
+
+rebase
+
+Which Git subcommand acquires and merges changes made to other repositories and branches into the local working copy?
+
+pull
+
+Which Git subcommand uploads a local working copy of a repository to a remote repository, such as a centralized repository?
+
+push
+
+Which Git subcommand displays the changes made to a local repository?
+
+log
+
+Which Git subcommand switches to a specific branch to work with?
+
+checkout
+
+Which Git subcommand adds a label to a repository's history, often to mark significant versions or releases?
+
+tag
+
+Which Git subcommand displays information on the current branch's status?
+
+show
+
+What command would configure the global user name within Git?
+
+git config —global user.name ‘User’
+
+What command would configure the global email within Git?
+
+git config —global user.email ‘user@domain.bla’
+
+In order, what commands would you use to create a project, add project files, tag commits, commit changes and then retrieve the status of changed files?
+
+1. mkdir /project
+2. git init /project
+3. git clone /project
+4. git add {filename}
+5. git tag -a v1.1 -m “Version 1.1.”
+6. git commit -m “Comment”
+7. git status
+
+What 2x Git subcommands would you use to create a branch of an existing project and then merge it back with the original after making changes?
+
+1. git branch newbranch
+2. git merge newbrach
+
+What file can be created to ignore certain files within a Git repository, so that they are not included in commits/pushes?
+
+.gitignore
+
+What 2x commands are required to work with collaborative Git branches, taking a “copy” of another developers proposed changes and then pushing your own changes?
+
+- git pull
+- git push
+
+![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/f1c405f6-a5fc-44b0-9a3a-c92e8fb092d5/aa85f8ca-3d23-4091-a0ed-8f15f7618e04/Untitled.png)
+
+Name 4x Container Engines
+
+- Docker
+- rkt
+- runc
+- containerd
+
+What does OCI stand for?
+
+Open Container Initiative
+
+What are the 3x components of a container solution?
+
+- Configuration file
+- Image
+- Running container
+
+Explain what it means to say containers are stateless
+
+Containers are stateless, meaning that any changes to the container or applications running in it are not preserved. Persistent changes to the container occur via configuration file updates.
