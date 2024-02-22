@@ -1,5 +1,5 @@
-# CompTIA Linux+ Flashcards
-Flashcards created based on the content of the 2023-2024 CompTIA Linux+ course content.
+# CompTIA Linux+ XK0-005 Flashcards
+Flashcards created based on the content of the XK0-005 CompTIA Linux+ course content.
 
 In progress.
 
