@@ -2097,3 +2097,91 @@ What are the 3x components of a container solution?
 
 Explain what it means to say containers are stateless
 Containers are stateless, meaning that any changes to the container or applications running in it are not preserved. Persistent changes to the container occur via configuration file updates.
+
+What is the docker subcommand to display system-wide information?
+info
+
+What is the docker subcommand to list port mappings for the specified container.
+port
+
+What is the docker subcommand to pull an image from a registry?
+pull
+
+What is the docker subcommand to upload an image to a registry?
+push
+
+What is the docker subcommand to list containers?
+ps
+
+What is the docker subcommand to remove containers?
+rm
+
+What is the docker subcommand to remove images?
+rmi
+
+What is the docker subcommand to run a command in a container?
+run
+
+What is the docker subcommand to find Docker Hub containers?
+search
+
+In order, what are the major container deployment steps for Docker, using a Docker Hub image?
+1. Create a directory with ‘mkdir’ and ‘cd’ in to it
+2. Use ‘docker pull’ to pull a base image from Docker Hub
+3. Display the image to confirm it was pulled successfully, and get it’s name, using ‘docker images’
+4. Start the container with ‘docker run {image name}’
+5. If you need to work interactively with the container itself, use ‘docker run -it {image name} bash’
+
+You want to create a custom Docker image that uses Alpine Linux as the base, and additionally runs the command to install Nano at build. In order, what steps and commands would you need?
+1. Create a Dockerfile with the following lines;
+    FROM alpinelinux/docker-alpine
+    RUN apt-get install -y nano
+2. Build the image using (tag optional) ‘docker build —tag alpine’
+3. Verify the image was created using ‘docker images’
+
+What Docker related command manages attributes for specified containers?
+docker container
+
+What Docker command would give you a container’s ID?
+docker container ls
+
+What docker container subcommands start and stop a container?
+start {container-ID}
+stop {container-ID}
+
+What docker container subcommand restarts a container?
+restart {container-ID}
+
+What docker container subcommand attaches local STDIN, STDOUT, STDERR to a container?
+attach {container-ID}
+
+What docker container subcommand displays detailed information on a container?
+inspect {container-ID}
+
+What docker container subcommand displays container logs?
+logs {container-ID}
+
+What docker container subcommand lists existing containers?
+ls
+
+What tool does Docker use to build multi-container clusters?
+Compose
+
+What is Kubernetes?
+A container orchestration solution
+
+What does Kubernetes use to house containers?
+Pods
+
+What are the 2x types of Kubernetes Pods?
+- singlenode (contains only a single container)
+- multicontainer (contains more than one container)
+
+What is another word for proxies, in relation to containers?
+sidecars
+
+What is the name for “a dedicated infrastructure layer managed by code that provides service-to-service interaction in a container environment”?
+A Service Mesh
+
+What is the name for a special container that be configured to handle communications on behalf of the rest of the containers in the pod?
+The Ambassador Container
