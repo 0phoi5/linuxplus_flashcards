@@ -2185,3 +2185,49 @@ A Service Mesh
 
 What is the name for a special container that be configured to handle communications on behalf of the rest of the containers in the pod?
 The Ambassador Container
+
+What’s the difference between a Container and a Virtual Machine?
+Virtual machines rely on a layer that virtualizes hardware, whereas containers rely on a virtualized operating system.
+
+What is the name for the type of application that virtualizes the hardware resources for Virtual Machines?
+A Hypervisor.
+
+What does KVM stand for?
+Kernel-based Virtual Machine
+
+What command provides command-line utility for managing virtual machines and hypervisors?
+virsh
+
+What is the virsh subcommand for displaying a list of recognized virtual machines?
+list
+
+What is the virsh subcommand for creating a virtual machine from an XML file?
+create {XML file-name}
+
+What is the virsh subcommand for saving the state of a virtual machine with the given file name?
+save {VM} {file-name}
+
+What is the virsh subcommand for opening a console to a virtual machine?
+console {VM}
+
+What command would create a new virtual machine called “centos7”, with 2 CPUS, 2GB of RAM, inserts the ISO installation media, set a disk size of 25GB and uses the RHEL7 template?
+virt-install --name=centos7 --vcpus=2 --memory=2048 --cdrom=/path/to/media.iso --disk size=25 --os-variant=rhel7
+
+What does API stand for?
+Application Programming Interface
+
+What API provides the building blocks for most Linux virtualisation solutions?
+libvirt
+
+What does GNOME’s “VMM” stand for?
+Virtual Machine Manager
+
+What are the 4x standard options for network access, for Virtual Machines?
+- None
+- Local - only access VMs on the same host
+- Host-only - Access only to the host computer, but not the physical network or internet
+- Bridged - Access to physical network and internet
+
+Before you can start creating Virtual Machines using the virt-install command, what needs to be installed and running?
+libvirtd
+Make sure it’s installed via yum/apt/dnf, and started via systemctl
