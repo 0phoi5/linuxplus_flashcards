@@ -2231,3 +2231,102 @@ What are the 4x standard options for network access, for Virtual Machines?
 Before you can start creating Virtual Machines using the virt-install command, what needs to be installed and running?
 libvirtd
 Make sure it’s installed via yum/apt/dnf, and started via systemctl
+
+What is the most common boot loader for Linux?
+GRUB2
+
+What does GRUB stand for?
+GRand Unified Bootloader
+
+What are the 7x Boot Sources you could use to install a new Linux OS from?
+- Storage Disk
+- USB
+- VM File
+- ISO Image
+- PXE
+- HTTP and FTP
+- NFS
+
+What does PXE stand for?
+Preboot Execution Environment?
+
+What does PXE provide?
+PXE (Preboot Execution Environment) is part of UEFI, and provides a client the ability to retrieve boot loader and system files from a DHCP server via TFTP.
+
+What does BIOS stand for?
+Basic Input/Output System
+
+In order, what are the 3x stages of the boot process?
+1. BIOS or UEFI
+2. initrd
+3. Kernel
+
+What does UEFI stand for?
+Unified Extensible Firmware Interface
+
+Where is the boot loader stored?
+In ROM (Read-only Memory)
+
+What are the 3x main components of the boot loader?
+1. The boot sector program. This is 512 bytes and allows selection of a Kernel to boot in to.
+2. The second-stage boot loader. This loads the OS.
+3. The boot loader installer. This coordinates the activites of the boot sector and boot loader.
+
+What 2x separate commands have the ability to create initrd images?
+- mkinitrd
+- dracut
+
+Where are initrd image files stored, and in what format?
+/boot/initrd-$(uname -r).img
+
+Which directory contains boot loader, device driver, and system application files that are executed by UEFI?
+/boot/efi
+
+What file extension are boot loader files usually named with?
+.efi
+
+If you needed a boot image that could be sized dynamically, rather than a block device formatted with a fixed size, what could you use?
+initramfs
+
+If you needed a boot image without embedding a special driver into the kernel, what could you use?
+initramfs
+
+Which file is a **compressed** executable file that contains the Linux kernel itself, that the boot loader loads into memory during the boot process?
+/boot/vmlinuz-{kernel_version}
+
+In order, give the steps that a boot process would take.
+1. BIOS/UEFI
+2. MBR/GPT
+3. GRUB2
+4. initrd / Kernel
+5. systemd
+
+What 7x things does GRUB2 offer over GRUB Legacy?
+- Support for 64-bit operating systems
+- Support for Live Booting
+- UUIDs
+- Modules
+- Configuration of the boot loader via scripts
+- Rescue mode
+- Graphical boot menus
+
+Can you install the GRUB2 boot loader on to a UEFI system using grub2-install
+No, that installation method only supports BIOS systems, not UEFI
+
+What command is used to configure the grub.cfg file?
+grub2-mkconfig
+
+Where does the grub.cfg file reside on BIOS systems?
+/boot/grub2
+
+Where does the grub.cfg file reside on UEFI systems?
+/boot/efi/EFI/{distro}/
+
+What file could you edit to give user-friendly names to the distributions presented in the boot menu?
+/etc/grub.d/40_custom
+
+What file could you edit to place a password on the selection of distributions presented in the boot menu?
+/etc/grub.d/40_custom
+
+What is the difference between 'grub2-install --modules' and 'grub2-install --install-modules'?
+--modules allows specifying additional modules to install alongside GRUB, while --install-modules actually installs the specified modules.
